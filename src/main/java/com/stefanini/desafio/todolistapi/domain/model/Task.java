@@ -8,6 +8,7 @@ public record Task(
         String title,
         String description,
         LocalDateTime creationDate,
+        LocalDateTime updateDate,
         TaskStatus status
 ) {
     public Task(String title, String description) {
@@ -15,6 +16,7 @@ public record Task(
                 UUID.randomUUID(),
                 title,
                 description,
+                LocalDateTime.now(),
                 LocalDateTime.now(),
                 TaskStatus.PENDENTE
         );

@@ -30,6 +30,9 @@ public class TaskEntity {
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
 
+    @Column(name = "update_date")
+    private LocalDateTime updateDate;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TaskStatus status;
