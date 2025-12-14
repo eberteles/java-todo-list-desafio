@@ -11,14 +11,4 @@ public record Task(
         LocalDateTime updateDate,
         TaskStatus status
 ) {
-    public Task(String title, String description) {
-        this(
-                UUID.randomUUID(),
-                title,
-                description,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                TaskStatus.PENDENTE
-        );
-    }
 }

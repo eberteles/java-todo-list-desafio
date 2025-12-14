@@ -38,11 +38,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
      * Manipula a exceção {@link TaskNotFoundException} lançada quando uma tarefa não é encontrada.
      * Retorna uma resposta HTTP 404 (Not Found) com uma mensagem clara obtida do messages.properties.
      * @param ex A exceção capturada.
-     * @param request O contexto da requisição web.
      * @return Um ResponseEntity contendo o corpo do erro e o status HTTP 404.
      */
     @ExceptionHandler(TaskNotFoundException.class)
-    public ResponseEntity<Object> handleTaskNotFound(TaskNotFoundException ex, WebRequest request) {
+    public ResponseEntity<Object> handleTaskNotFound(TaskNotFoundException ex) {
         String message = messageSource.getMessage(
                 "task.not.found",
                 new Object[]{ex.getTaskId()},
@@ -60,12 +59,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Manipula exceções de conversão de tipo de argumento (ex: String inválida para UUID).
+     * Retorna uma resposta HTTP 400 (Bad Request) com uma mensagem personalizada em português.
      * @param ex A exceção capturada.
-     * @param request O contexto da requisição web.
      * @return Um ResponseEntity contendo o erro formatado.
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST.value());
