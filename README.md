@@ -13,6 +13,7 @@ Esta é uma API RESTful para gerenciamento de tarefas (Todo List), desenvolvida 
 | **Mapeamento DTO** | MapStruct | - |
 | **Documentação** | Springdoc-OpenAPI (Swagger UI) | - |
 | **Contêineres** | Docker & Docker Compose | - |
+| **Cloud & DevOps** | Google Cloud Platform (GCP) & GitHub Actions | - |
 
 ---
 
@@ -29,6 +30,7 @@ A arquitetura do projeto foi estruturada com foco em manutenibilidade, escalabil
 | **OpenAPI/Swagger** | Documentação automática dos endpoints da API, permitindo que qualquer consumidor entenda a estrutura de requisições, respostas e códigos de status. |
 | **Basic Auth** | Implementação de autenticação simples e robusta (Spring Security) para proteger os endpoints da API contra acesso não autorizado. |
 | **DDD (Domain Model)** | Manter uma separação clara entre as regras de negócio (`Task.java`) e os detalhes técnicos (persistência e API), aumentando a manutenibilidade do código. |
+| **CI/CD** | Pipeline de integração e entrega contínua configurado. Todo Pull Request para a branch `main` dispara automaticamente o deploy da aplicação no ambiente Google Cloud. |
 
 ---
 
@@ -99,3 +101,19 @@ Para executar todos os testes (Unitários e de Integração), use o comando:
 ```bash
 ./gradlew clean test
 ```
+
+---
+
+## ☁️ Deploy Automatizado
+
+O projeto conta com um pipeline de CI/CD configurado via **GitHub Actions**.
+
+Sempre que um Pull Request é aprovado e mergeado na branch `main`, o pipeline é acionado automaticamente para realizar o deploy da nova versão da API no ambiente **Google Cloud Platform (GCP)**.
+
+| Serviço | Detalhe |
+| :--- | :--- |
+| **Plataforma** | Google Cloud Run |
+| **Banco de Dados** | Cloud SQL for SQL Server Express |
+| **Pipeline CI/CD** | GitHub Actions |
+| **URL de Acesso** | [Acesse a API aqui](https://todo-list-api-service-540271331730.us-central1.run.app) |
+| **Credenciais de Acesso** | HTTP Basic Auth (Usuário: `stefuser`, Senha: `stef123`) |
