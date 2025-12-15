@@ -53,7 +53,7 @@ jobs:
         with:
           service: todo-list-api-service
           region: ${{ env.REGION }}
-          image: ${{ env.ARTIFACT_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }} # REFERÊNCIA FINAL DA IMAGEM
+          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
           env_vars: |
             SPRING_PROFILES_ACTIVE=gcp
