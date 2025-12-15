@@ -56,7 +56,7 @@ jobs:
         with:
           service: ${{ env.SERVICE_NAME }}
           region: ${{ env.REGION }}
-          image: ${{ ARTIFACT_REPO }}/${IMAGE_NAME}:${{ github.sha }}
+          image: ${{ env.ARTIFACT_REPO }}/${IMAGE_NAME}:${{ github.sha }}
           env_vars: |
             SPRING_PROFILES_ACTIVE=gcp
             DB_HOST=${{ secrets.DB_HOST }}
