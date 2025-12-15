@@ -1,0 +1,4 @@
+
+ALTER TABLE tasks
+ADD update_date DATETIME2 NULL;
+GO

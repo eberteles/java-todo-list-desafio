@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------
+  # 1. SERVIÇO: mssql (Banco de Dados SQL Server)
+  # -------------------------------------------------------------
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: todo-list-mssql
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      SA_PASSWORD: "Str0ng!Pass@2025"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    restart: always
+
+  # -------------------------------------------------------------
+  # 2. SERVIÇO: mssql-init (Script de Inicialização do Banco)
+  # -------------------------------------------------------------
+  mssql-init:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: todo-list-mssql-init
+    depends_on:
+      - mssql
+    volumes:
+      - ./docker/mssql/init:/scripts
+    entrypoint: >
+      sh -c "
+      echo 'Aguardando SQL Server...';
+      until /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Str0ng!Pass@2025' -C -Q 'SELECT 1' > /dev/null 2>&1; do
+        sleep 2;
+      done;
+      echo 'SQL Server pronto. Criando database...';
+      /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P 'Str0ng!Pass@2025' -C -i /scripts/01-create-database.sql;
+      echo 'Database criada com sucesso.';
+      "
+    restart: "no"
+
+  # -------------------------------------------------------------
+  # 3. SERVIÇO: todo-list-api (Aplicação Spring Boot)
+  # -------------------------------------------------------------
+  todo-list-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-list-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mssql
+      - mssql-init
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+      SPRING_DATASOURCE_URL: jdbc:sqlserver://mssql:1433;databaseName=ToDoListDB;TrustServerCertificate=True
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD: Str0ng!Pass@2025
+
+    restart: "on-failure"
+
+# Volume para persistir os dados do SQL Server
+volumes:
+  mssql_data:
