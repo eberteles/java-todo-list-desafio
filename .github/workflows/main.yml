@@ -53,11 +53,11 @@ jobs:
           region: ${{ env.REGION }}
           image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-          cloud_sql_instances: todo-list-stefanini-gcp:us-central1:todo-list-sql-instance
+          flags: |
+            --set-cloudsql-instances todo-list-stefanini-gcp:us-central1:todo-list-sql-instance
 
           env_vars: |
             SPRING_PROFILES_ACTIVE=gcp
-            DB_HOST=${{ secrets.DB_HOST }}
             DB_NAME=${{ secrets.DB_NAME }}
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
